@@ -1,7 +1,7 @@
 import hashlib
 import inspect
 
-from autocache.utils import convert_dict_to_tuple
+from autocache.utils import convert_to_tuple
 
 
 def md5(value):
@@ -34,12 +34,7 @@ def source_hash(function, hash=md5):
 def argument_hash(function, *args, **kwargs):
     # TODO: Allow usage of a different postprocessor than MD5.
     # TODO: Replace `hash` with a safe hashing implementation.
-    # TODO: Allow recursive conversion of dictionary to tuples, probably do the
-    # same for lists as well.
 
     arguments = inspect.getcallargs(function, *args, **kwargs)
-    if 'kwargs' in arguments:
-        arguments['kwargs'] = convert_dict_to_tuple(arguments['kwargs'])
-
-    arguments = convert_dict_to_tuple(arguments)
+    arguments = convert_to_tuple(arguments)
     return md5(':'.join(map(lambda value: str(hash(value)), arguments)))
