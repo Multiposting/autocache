@@ -1,7 +1,7 @@
 import hashlib
 import inspect
 
-from autocache.utils import convert_to_tuple
+from autocache.utils import convert_to_hashable
 
 
 def md5(value):
@@ -36,5 +36,5 @@ def argument_hash(function, *args, **kwargs):
     # TODO: Replace `hash` with a safe hashing implementation.
 
     arguments = inspect.getcallargs(function, *args, **kwargs)
-    arguments = convert_to_tuple(arguments)
+    arguments = convert_to_hashable(arguments)
     return md5(':'.join(map(lambda value: str(hash(value)), arguments)))

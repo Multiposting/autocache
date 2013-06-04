@@ -1,5 +1,5 @@
 from autocache.hashing import argument_hash, bytecode_hash, source_hash
-from autocache.utils import convert_to_tuple
+from autocache.utils import convert_to_hashable
 
 
 def test_callable_hashing():
@@ -54,11 +54,11 @@ def test_dictionary_conversion():
     """
     Test converting dictionaries to tuples and ensuring proper key order.
     """
-    assert convert_to_tuple({}) == ()
+    assert convert_to_hashable({}) == ()
 
     expected = (('a', 1), ('b', 2))
-    assert convert_to_tuple({'a': 1, 'b': 2}) == expected
-    assert convert_to_tuple({'b': 2, 'a': 1}) == expected
+    assert convert_to_hashable({'a': 1, 'b': 2}) == expected
+    assert convert_to_hashable({'b': 2, 'a': 1}) == expected
 
-    assert convert_to_tuple(('a', [1, 2, 3, 4])) == ('a', (1, 2, 3, 4))
-    assert convert_to_tuple(('a', {'b': {3: [1, 2, 3, 4]}})) == ('a', (('b', ((3, (1, 2, 3, 4)), )), ))
+    assert convert_to_hashable(('a', [1, 2, 3, 4])) == ('a', (1, 2, 3, 4))
+    assert convert_to_hashable(('a', {'b': {3: [1, 2, 3, 4]}})) == ('a', (('b', ((3, (1, 2, 3, 4)), )), ))
